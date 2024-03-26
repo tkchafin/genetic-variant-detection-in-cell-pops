@@ -9,7 +9,7 @@ rule freebayes:
     conda:
         '../envs/freebayes.yaml',
     container:
-        "docker://kfdrc/freebayes"
+        "docker://staphb/freebayes:1.3.6"
     shell:
         r"""
         awk '{{print $1":0-"$2}}' {input.fai} \
@@ -35,7 +35,7 @@ rule freebayes_vep:
     conda:
         '../envs/vep.yaml',
     container:
-        "docker://ensemblorg/ensembl-vep"
+        "docker://ensemblorg/ensembl-vep:release_105.0"
     shell:
         r"""
         vep -i {input.vcf} --vcf --gff {input.gff} --format vcf --compress_output bgzip --species NA \
