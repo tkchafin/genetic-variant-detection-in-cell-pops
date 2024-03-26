@@ -8,6 +8,8 @@ rule freebayes:
         vcf= '{genome}/freebayes/variants.vcf.gz',
     conda:
         '../envs/freebayes.yaml',
+    container:
+        "docker://kfdrc/freebayes"
     shell:
         r"""
         awk '{{print $1":0-"$2}}' {input.fai} \
@@ -32,6 +34,8 @@ rule freebayes_vep:
         vcf= '{genome}/freebayes/vep.vcf.gz',
     conda:
         '../envs/vep.yaml',
+    container:
+        "docker://ensemblorg/ensembl-vep"
     shell:
         r"""
         vep -i {input.vcf} --vcf --gff {input.gff} --format vcf --compress_output bgzip --species NA \
