@@ -15,6 +15,10 @@ RUN apt-get update && apt-get install -y \
     parallel \
     && rm -rf /var/lib/apt/lists/*
 
+# python dependencies
+RUN apt-get update && apt-get install -y python3-pip \
+    && python3 -m pip install pysam
+
 # Download Freebayes static binary
 RUN wget -q https://github.com/freebayes/freebayes/releases/download/v1.3.6/freebayes-1.3.6-linux-amd64-static.gz -O /tmp/freebayes.gz \
     && gunzip /tmp/freebayes.gz \
