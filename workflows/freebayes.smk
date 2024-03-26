@@ -9,7 +9,7 @@ rule freebayes:
     conda:
         '../envs/freebayes.yaml',
     container:
-        "docker://staphb/freebayes:1.3.6"
+        "docker://tkchafin/freebayes:1.3.6"
     shell:
         r"""
         awk '{{print $1":0-"$2}}' {input.fai} \
