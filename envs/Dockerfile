@@ -1,12 +1,18 @@
 # Use Ubuntu as the base image
 FROM --platform=linux/amd64 ubuntu:latest
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # Update and install dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     git \
     bcftools \
     tabix \
+    libvcflib-tools \
+    libvcflib-dev \
+    python3 \
+    parallel \
     && rm -rf /var/lib/apt/lists/*
 
 # Download Freebayes static binary
@@ -15,9 +21,13 @@ RUN wget -q https://github.com/freebayes/freebayes/releases/download/v1.3.6/free
     && chmod +x /tmp/freebayes \
     && mv /tmp/freebayes /usr/local/bin/
 
-# Clone the Freebayes repository
+# Clone the Freebayes repository and symlink scripts
 RUN git clone --recursive https://github.com/freebayes/freebayes.git /opt/freebayes \
     && ln -s /opt/freebayes/scripts/* /usr/local/bin/
+
+# Clone the genetic-variant-detection-in-cell-pops repository and symlink scripts
+RUN git clone https://github.com/glaParaBio/genetic-variant-detection-in-cell-pops.git /opt/genetic-variant-detection \
+    && ln -s /opt/genetic-variant-detection/scripts/* /usr/local/bin/
 
 # Set the default command for the container
 CMD ["bash"]

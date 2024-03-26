@@ -18,7 +18,7 @@ rule freebayes:
             --min-base-quality 5 \
             --min-alternate-fraction 0.1 --pooled-continuous {input.bam} \
         | awk -v OFS='\t' -v FS='\t' -v n=1 '{{if($0 !~ "^#" && $3 == "."){{$3=n; n++}} print $0}}' \
-        | {workflow.basedir}/scripts/add_allele_frequency_vcf.py --format freebayes - \
+        | add_allele_frequency_vcf.py --format freebayes - \
         | bcftools norm -m- -f {input.fasta} \
         | bcftools view -O z > {output.vcf}
         tabix -f {output.vcf}
