@@ -45,6 +45,8 @@ rule delly_vep:
         vcf= '{genome}/delly/vep.vcf.gz',
     conda:
         '../envs/vep.yaml',
+    container:
+        "docker://ensemblorg/ensembl-vep:release_105.0"
     shell:
         r"""
         vep -i {input.vcf} --vcf --gff {input.gff} --format vcf --compress_output bgzip --species NA \
